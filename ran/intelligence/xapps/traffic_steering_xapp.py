@@ -11,13 +11,8 @@ Implements intelligent traffic steering using AI/ML models for:
 import logging
 import numpy as np
 from typing import Dict, List, Optional, Any
-import sys
-import os
 
-# Add parent directory to path for imports
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-
-from ric.near_rt_ric import xApp
+from ..ric.near_rt_ric import xApp
 
 logger = logging.getLogger(__name__)
 

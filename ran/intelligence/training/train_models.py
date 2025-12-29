@@ -38,10 +38,16 @@ def train_dqn(config: dict):
     logger.info("Training DQN Resource Allocator")
     
     # Import model
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-    from ran.intelligence.models.resource_allocation.dqn_resource_allocator import (
-        DQNResourceAllocator
-    )
+    try:
+        from ..models.resource_allocation.dqn_resource_allocator import (
+            DQNResourceAllocator
+        )
+    except ImportError:
+        # Fallback for standalone execution
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+        from ran.intelligence.models.resource_allocation.dqn_resource_allocator import (
+            DQNResourceAllocator
+        )
     
     # Extract config
     model_config = {
@@ -130,10 +136,16 @@ def train_ppo(config: dict):
     logger.info("Training PPO Scheduler")
     
     # Import model
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-    from ran.intelligence.models.resource_allocation.ppo_scheduler import (
-        PPOScheduler, PPOConfig
-    )
+    try:
+        from ..models.resource_allocation.ppo_scheduler import (
+            PPOScheduler, PPOConfig
+        )
+    except ImportError:
+        # Fallback for standalone execution
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+        from ran.intelligence.models.resource_allocation.ppo_scheduler import (
+            PPOScheduler, PPOConfig
+        )
     
     # Create config
     ppo_config = PPOConfig(
@@ -197,10 +209,16 @@ def train_lstm(config: dict):
     logger.info("Training LSTM Traffic Predictor")
     
     # Import model
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-    from ran.intelligence.models.traffic_prediction.lstm_traffic_predictor import (
-        LSTMTrafficPredictor
-    )
+    try:
+        from ..models.traffic_prediction.lstm_traffic_predictor import (
+            LSTMTrafficPredictor
+        )
+    except ImportError:
+        # Fallback for standalone execution
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+        from ran.intelligence.models.traffic_prediction.lstm_traffic_predictor import (
+            LSTMTrafficPredictor
+        )
     
     model_config = {
         'input_dim': config['model']['architecture']['input_dim'],
