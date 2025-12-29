@@ -1,0 +1,43 @@
+# PPO Scheduler Configuration
+
+model:
+  name: "PPO_Network_Scheduler"
+  type: "proximal_policy_optimization"
+  
+  architecture:
+    state_dim: 303  # 50 users * 6 features + 3 global features
+    action_dim: 150  # 50 users * 3 actions (power, MCS, PRB weight)
+    hidden_dims: [256, 256, 128]
+    
+  training:
+    learning_rate: 0.0003
+    gamma: 0.99
+    gae_lambda: 0.95
+    clip_epsilon: 0.2
+    c1: 1.0  # Value loss coefficient
+    c2: 0.01  # Entropy coefficient
+    max_grad_norm: 0.5
+    update_epochs: 10
+    batch_size: 64
+    
+  environment:
+    max_users: 50
+    total_power_budget: 100  # Watts
+    max_episodes: 5000
+    max_steps_per_episode: 1000
+    
+  objectives:
+    throughput_weight: 1.0
+    energy_weight: 0.3
+    fairness_weight: 0.2
+    qos_weight: 0.5
+    
+  evaluation:
+    eval_frequency: 50
+    eval_episodes: 10
+    deterministic: true
+    
+  deployment:
+    inference_mode: "deterministic"
+    max_inference_time_ms: 10
+    model_path: "models/ppo_scheduler.pth"

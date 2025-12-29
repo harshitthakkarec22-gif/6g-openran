@@ -1,0 +1,39 @@
+# LSTM Traffic Prediction Configuration
+
+model:
+  name: "LSTM_Traffic_Predictor"
+  type: "bidirectional_lstm"
+  
+  architecture:
+    input_dim: 18  # 3 slices * 5 features + 3 temporal features
+    hidden_dim: 128
+    num_layers: 3
+    output_dim: 10  # Predict next 10 time steps (10-100 seconds)
+    dropout: 0.2
+    
+  training:
+    learning_rate: 0.001
+    batch_size: 32
+    sequence_length: 20  # Use 20 previous time steps
+    max_epochs: 200
+    early_stopping_patience: 20
+    
+  data:
+    num_slices: 3  # eMBB, URLLC, mMTC
+    sampling_interval_s: 10
+    train_split: 0.7
+    val_split: 0.15
+    test_split: 0.15
+    
+  prediction:
+    horizon_seconds: [10, 30, 60, 100]
+    confidence_intervals: [0.95]
+    
+  evaluation:
+    metrics: ["mse", "mae", "rmse", "mape"]
+    eval_frequency: 10  # epochs
+    
+  deployment:
+    max_inference_time_ms: 50
+    real_time_update: true
+    model_path: "models/lstm_traffic_predictor.pth"

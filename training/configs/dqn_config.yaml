@@ -1,0 +1,42 @@
+# DQN Resource Allocation Configuration
+
+model:
+  name: "DQN_Resource_Allocation"
+  type: "deep_q_network"
+  
+  architecture:
+    state_dim: 402  # 100 users * 4 features + 2 global features
+    action_dim: 500  # 5 allocation strategies * 100 possible allocations
+    hidden_dims: [256, 256, 128]
+    activation: "relu"
+  
+  training:
+    learning_rate: 0.0001
+    batch_size: 64
+    replay_buffer_size: 100000
+    target_update_frequency: 1000
+    gamma: 0.99
+    epsilon_start: 1.0
+    epsilon_end: 0.01
+    epsilon_decay: 0.995
+    
+  environment:
+    max_users: 100
+    total_prbs: 100
+    max_episodes: 10000
+    max_steps_per_episode: 1000
+    
+  rewards:
+    throughput_weight: 1.0
+    latency_penalty: -0.5
+    fairness_weight: 0.3
+    
+  evaluation:
+    eval_frequency: 100  # episodes
+    eval_episodes: 10
+    save_best_model: true
+    
+  deployment:
+    inference_batch_size: 1
+    max_inference_time_ms: 10
+    model_path: "models/dqn_resource_allocator.pth"
