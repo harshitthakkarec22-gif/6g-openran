@@ -2,7 +2,7 @@
 
 A comprehensive boilerplate repository for 6G Open Radio Access Network (OPENRAN) architecture, designed for undergraduate students and researchers.
 
-## 📚 Overview
+## Overview
 
 This repository provides a complete framework for understanding, learning, and implementing 6G OPENRAN systems. It includes:
 
@@ -11,18 +11,18 @@ This repository provides a complete framework for understanding, learning, and i
 - **Learning Resources**: References, guides, and examples for students
 - **Practical Implementation**: Boilerplate code and configuration templates
 
-## 🎯 Key Features
+## Key Features
 
-- ✅ **O-RAN Compliant**: Follows O-RAN Alliance specifications
-- ✅ **Disaggregated RAN**: CU/DU/RU separation
-- ✅ **5G Core Network**: Complete 5GC implementation structure
-- ✅ **RAN Intelligent Controller (RIC)**: AI/ML-based network optimization
-- ✅ **Network Slicing**: Support for eMBB, URLLC, and mMTC
-- ✅ **6G Features**: THz communication, AI-native architecture, Digital Twin
-- ✅ **Cloud-Native**: Containerized, microservices-based design
-- ✅ **Undergraduate-Friendly**: Comprehensive learning materials
+- **O-RAN Compliant**: Follows O-RAN Alliance specifications
+- **Disaggregated RAN**: CU/DU/RU separation
+- **5G Core Network**: Complete 5GC implementation structure
+- **RAN Intelligent Controller (RIC)**: AI/ML-based network optimization
+- **Network Slicing**: Support for eMBB, URLLC, and mMTC
+- **6G Features**: THz communication, AI-native architecture, Digital Twin
+- **Cloud-Native**: Containerized, microservices-based design
+- **Undergraduate-Friendly**: Comprehensive learning materials
 
-## 📖 Documentation
+## Documentation
 
 ### Essential Reading
 
@@ -46,7 +46,7 @@ This repository provides a complete framework for understanding, learning, and i
 - [Testing Guide](docs/guides/TESTING_GUIDE.md)
 - [References](docs/references/REFERENCES.md)
 
-## 🏗️ Repository Structure
+## Repository Structure
 
 ```
 6g-openran/
@@ -93,7 +93,7 @@ This repository provides a complete framework for understanding, learning, and i
     └── advanced-scenarios/     # Advanced use cases
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -128,7 +128,7 @@ cd 6g-openran
 3. **Follow Getting Started Guide**: Step-by-step instructions in [docs/guides/GETTING_STARTED.md](docs/guides/GETTING_STARTED.md)
 4. **Run Examples**: Try basic examples in the `examples/` directory
 
-## 🛠️ Tools & Technologies
+## Tools & Technologies
 
 ### Core Technologies
 
@@ -144,7 +144,7 @@ cd 6g-openran
 
 See the [Research Report](docs/RESEARCH_REPORT.md#5-tools--technologies) for detailed information.
 
-## 📊 Architecture Highlights
+## Architecture Highlights
 
 ### High-Level System View
 
@@ -184,7 +184,7 @@ See the [Research Report](docs/RESEARCH_REPORT.md#5-tools--technologies) for det
 
 See [INITIAL_ARCHITECTURE.md](docs/architecture/INITIAL_ARCHITECTURE.md) for detailed diagrams.
 
-## 🎓 Learning Path
+## Learning Path
 
 ### For Undergraduate Students
 
@@ -209,7 +209,7 @@ See [INITIAL_ARCHITECTURE.md](docs/architecture/INITIAL_ARCHITECTURE.md) for det
    - AI/ML integration
    - 6G-specific features
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run unit tests
@@ -222,7 +222,7 @@ See [INITIAL_ARCHITECTURE.md](docs/architecture/INITIAL_ARCHITECTURE.md) for det
 ./scripts/testing/run-performance-tests.sh
 ```
 
-## 📈 Roadmap
+## Roadmap
 
 - [x] Initial repository structure
 - [x] Comprehensive research report
@@ -237,7 +237,7 @@ See [INITIAL_ARCHITECTURE.md](docs/architecture/INITIAL_ARCHITECTURE.md) for det
 - [ ] Example applications
 - [ ] Video tutorials
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please read the [Contributing Guide](CONTRIBUTING.md) for details on:
 
@@ -246,11 +246,11 @@ Contributions are welcome! Please read the [Contributing Guide](CONTRIBUTING.md)
 - Development workflow
 - Testing requirements
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🔗 Resources
+## Resources
 
 ### Standards & Specifications
 
@@ -271,13 +271,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [3GPP Portal](https://portal.3gpp.org/)
 - [IEEE Communications Society](https://www.comsoc.org/)
 
-## 💬 Support
+## Support
 
 - **Issues**: Report bugs or request features via [GitHub Issues](https://github.com/harshitthakkarec22-gif/6g-openran/issues)
 - **Discussions**: Join discussions in [GitHub Discussions](https://github.com/harshitthakkarec22-gif/6g-openran/discussions)
 - **Email**: Contact maintainers for questions
 
-## 🌟 Acknowledgments
+## Acknowledgments
 
 This project builds upon the work of:
 - O-RAN Alliance and its specifications
@@ -285,7 +285,7 @@ This project builds upon the work of:
 - Open source communities (srsRAN, OpenAirInterface, Open5GS)
 - Academic research in 6G technologies
 
-## 📌 Citation
+## Citation
 
 If you use this repository in your research or project, please cite:
 
@@ -301,7 +301,7 @@ If you use this repository in your research or project, please cite:
 
 ---
 
-**Status**: 🚧 Under Active Development
+**Status**: Under Active Development
 
 **Version**: 1.0.0
 
