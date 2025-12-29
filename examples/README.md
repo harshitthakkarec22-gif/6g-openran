@@ -21,6 +21,12 @@ Complex use cases demonstrating:
 - Network optimization
 - Edge computing integration
 
+## Software-Only Demo (x86_64)
+
+Location: `examples/software-only-demo/`
+
+Lightweight Python simulation of CU → DU → RU processing tuned for an x86_64 laptop/desktop (e.g., Intel i5-1035G1). Produces throughput and latency stats without requiring RF hardware.
+
 ## Running Examples
 
 ```bash
