@@ -1,0 +1,413 @@
+# Example Configuration - Basic 6G OPENRAN Setup
+
+# This is a sample configuration for a basic 6G OPENRAN deployment
+# Suitable for learning and development purposes
+
+---
+# Global Configuration
+global:
+  deployment_name: "6g-openran-basic"
+  environment: "development"
+  log_level: "info"
+  
+---
+# RAN Configuration
+ran:
+  deployment_mode: "monolithic"  # Options: monolithic, distributed, cloud-native
+  
+  # Centralized Unit (CU)
+  cu:
+    id: 1
+    name: "CU-001"
+    
+    # CU Control Plane
+    cu_cp:
+      plmn:
+        mcc: "001"
+        mnc: "01"
+      tac: 1
+      cells:
+        - cell_id: 1
+          pci: 1  # Physical Cell ID
+          dl_arfcn: 632628  # 3.5 GHz (n78 band)
+          ul_arfcn: 632628
+          bandwidth: 100  # MHz
+          tx_power: 20  # dBm
+      
+      interfaces:
+        n2:
+          amf_address: "127.0.0.1"
+          amf_port: 38412
+        f1c:
+          bind_address: "127.0.0.1"
+          bind_port: 38472
+    
+    # CU User Plane
+    cu_up:
+      interfaces:
+        n3:
+          upf_address: "127.0.0.1"
+          upf_port: 2152
+        f1u:
+          bind_address: "127.0.0.1"
+          bind_port: 2153
+  
+  # Distributed Unit (DU)
+  du:
+    id: 1
+    name: "DU-001"
+    
+    mac:
+      scheduler: "proportional_fair"  # Options: round_robin, max_throughput, proportional_fair
+      harq_processes: 8
+      max_retransmissions: 4
+    
+    rlc:
+      mode: "acknowledged"  # Options: transparent, unacknowledged, acknowledged
+      sn_length: 12
+      t_reassembly: 35  # ms
+      t_status_prohibit: 10  # ms
+    
+    interfaces:
+      f1c:
+        cu_address: "127.0.0.1"
+        cu_port: 38472
+      f1u:
+        cu_address: "127.0.0.1"
+        cu_port: 2153
+      fronthaul:
+        ru_address: "127.0.0.1"
+        ru_port: 50000
+  
+  # Radio Unit (RU)
+  ru:
+    id: 1
+    name: "RU-001"
+    
+    rf:
+      tx_gain: 80  # dB
+      rx_gain: 40  # dB
+      center_frequency: 3500000000  # Hz (3.5 GHz)
+      sample_rate: 61440000  # Hz (61.44 MHz)
+    
+    antenna:
+      num_tx_ports: 64
+      num_rx_ports: 64
+      mimo_layers: 4
+      beamforming_enabled: true
+    
+    interfaces:
+      fronthaul:
+        du_address: "127.0.0.1"
+        du_port: 50000
+        vlan_id: 100
+
+---
+# Core Network Configuration
+core:
+  # Network Repository Function
+  nrf:
+    sbi:
+      bind_address: "0.0.0.0"
+      port: 7777
+      scheme: "http"
+    database:
+      type: "mongodb"
+      uri: "mongodb://localhost:27017"
+      name: "open5gs"
+  
+  # Access and Mobility Management Function
+  amf:
+    guami:
+      plmn:
+        mcc: "001"
+        mnc: "01"
+      region_id: 128
+      set_id: 1
+      pointer: 0
+    
+    tai:
+      - plmn:
+          mcc: "001"
+          mnc: "01"
+        tac: 1
+    
+    interfaces:
+      ngap:
+        bind_address: "0.0.0.0"
+        port: 38412
+      sbi:
+        bind_address: "0.0.0.0"
+        port: 7778
+        scheme: "http"
+    
+    security:
+      integrity_order: ["NIA2", "NIA1", "NIA0"]
+      ciphering_order: ["NEA2", "NEA1", "NEA0"]
+  
+  # Session Management Function
+  smf:
+    interfaces:
+      sbi:
+        bind_address: "0.0.0.0"
+        port: 7779
+        scheme: "http"
+      pfcp:
+        bind_address: "0.0.0.0"
+        port: 8805
+    
+    subnet:
+      - cidr: "10.45.0.0/16"
+        dnn: "internet"
+      - cidr: "10.46.0.0/16"
+        dnn: "ims"
+    
+    dns:
+      primary: "8.8.8.8"
+      secondary: "8.8.4.4"
+    
+    mtu: 1400
+  
+  # User Plane Function
+  upf:
+    interfaces:
+      pfcp:
+        bind_address: "0.0.0.0"
+        port: 8805
+      gtpu:
+        bind_address: "0.0.0.0"
+    
+    subnet:
+      - cidr: "10.45.0.0/16"
+        dnn: "internet"
+        dev: "ogstun"
+      - cidr: "10.46.0.0/16"
+        dnn: "ims"
+        dev: "ogstun2"
+  
+  # Authentication Server Function
+  ausf:
+    interfaces:
+      sbi:
+        bind_address: "0.0.0.0"
+        port: 7780
+        scheme: "http"
+  
+  # Unified Data Management
+  udm:
+    interfaces:
+      sbi:
+        bind_address: "0.0.0.0"
+        port: 7781
+        scheme: "http"
+  
+  # Policy Control Function
+  pcf:
+    interfaces:
+      sbi:
+        bind_address: "0.0.0.0"
+        port: 7782
+        scheme: "http"
+    
+    default_policy:
+      session_ambr:
+        uplink: "1Gbps"
+        downlink: "2Gbps"
+
+---
+# RIC Configuration
+ric:
+  # Near Real-Time RIC
+  near_rt_ric:
+    enabled: true
+    
+    interfaces:
+      e2:
+        bind_address: "0.0.0.0"
+        port: 36421
+      a1:
+        non_rt_ric_address: "127.0.0.1"
+        non_rt_ric_port: 8080
+    
+    xapps:
+      - name: "qos-optimization"
+        enabled: true
+        config:
+          optimization_interval: 1000  # ms
+      
+      - name: "load-balancing"
+        enabled: true
+        config:
+          threshold: 80  # percentage
+      
+      - name: "slice-management"
+        enabled: false
+  
+  # Non Real-Time RIC
+  non_rt_ric:
+    enabled: true
+    
+    interfaces:
+      a1:
+        bind_address: "0.0.0.0"
+        port: 8080
+    
+    ml_models:
+      - name: "traffic-prediction"
+        enabled: true
+        training_interval: 3600  # seconds
+      
+      - name: "anomaly-detection"
+        enabled: true
+        threshold: 0.95
+
+---
+# Network Slicing Configuration
+network_slicing:
+  enabled: true
+  
+  slices:
+    # Enhanced Mobile Broadband
+    - name: "eMBB"
+      s_nssai:
+        sst: 1
+        sd: "000001"
+      description: "High throughput for video streaming and data"
+      
+      qos:
+        5qi: 9
+        priority: 8
+        packet_delay_budget: 50  # ms
+        packet_error_rate: 0.001
+      
+      resources:
+        max_sessions: 1000
+        guaranteed_bitrate_ul: "100Mbps"
+        guaranteed_bitrate_dl: "500Mbps"
+        max_bitrate_ul: "500Mbps"
+        max_bitrate_dl: "2Gbps"
+    
+    # Ultra-Reliable Low-Latency Communications
+    - name: "URLLC"
+      s_nssai:
+        sst: 2
+        sd: "000002"
+      description: "Low latency for industrial automation and autonomous vehicles"
+      
+      qos:
+        5qi: 82
+        priority: 1
+        packet_delay_budget: 1  # ms
+        packet_error_rate: 0.000001
+      
+      resources:
+        max_sessions: 100
+        guaranteed_bitrate_ul: "50Mbps"
+        guaranteed_bitrate_dl: "50Mbps"
+        latency_target: 1  # ms
+        reliability: "99.9999%"
+    
+    # Massive Machine-Type Communications
+    - name: "mMTC"
+      s_nssai:
+        sst: 3
+        sd: "000003"
+      description: "Massive IoT connections"
+      
+      qos:
+        5qi: 6
+        priority: 15
+        packet_delay_budget: 100  # ms
+        packet_error_rate: 0.01
+      
+      resources:
+        max_sessions: 10000
+        guaranteed_bitrate_ul: "1Mbps"
+        guaranteed_bitrate_dl: "1Mbps"
+        connection_density: 1000000  # per km²
+
+---
+# Monitoring Configuration
+monitoring:
+  prometheus:
+    enabled: true
+    bind_address: "0.0.0.0"
+    port: 9090
+    scrape_interval: 15  # seconds
+  
+  grafana:
+    enabled: true
+    bind_address: "0.0.0.0"
+    port: 3000
+    admin_user: "admin"
+    admin_password: "admin"  # Change in production!
+  
+  elasticsearch:
+    enabled: true
+    host: "localhost"
+    port: 9200
+  
+  metrics:
+    - name: "ue_registrations"
+      type: "counter"
+    - name: "pdu_sessions"
+      type: "gauge"
+    - name: "throughput"
+      type: "histogram"
+    - name: "latency"
+      type: "histogram"
+
+---
+# Security Configuration
+security:
+  authentication:
+    method: "5G-AKA"  # Options: 5G-AKA, EAP-AKA'
+    
+  encryption:
+    algorithms: ["NEA2", "NEA1", "NEA0"]
+    preferred: "NEA2"
+  
+  integrity:
+    algorithms: ["NIA2", "NIA1", "NIA0"]
+    preferred: "NIA2"
+  
+  certificates:
+    ca_cert: "/etc/certs/ca.crt"
+    server_cert: "/etc/certs/server.crt"
+    server_key: "/etc/certs/server.key"
+
+---
+# Simulation Configuration
+simulation:
+  enabled: true
+  
+  ue_simulator:
+    num_ues: 10
+    registration_rate: 1  # UEs per second
+    traffic_model: "full_buffer"  # Options: full_buffer, ftp, video, voip
+    
+  traffic_generator:
+    type: "iperf3"
+    duration: 60  # seconds
+    bitrate: "100M"
+    protocol: "udp"
+
+---
+# Development Configuration
+development:
+  debug_mode: true
+  log_to_file: true
+  log_directory: "/var/log/6g-openran"
+  
+  test_mode:
+    enabled: false
+    mock_rf: true
+    accelerated_time: false
+
+---
+# Notes:
+# 1. All IP addresses use localhost (127.0.0.1) for single-machine setup
+# 2. In distributed deployment, replace with actual IP addresses
+# 3. Adjust resource limits based on hardware capabilities
+# 4. Security settings should be hardened for production use
+# 5. This configuration supports basic eMBB, URLLC, and mMTC slices
